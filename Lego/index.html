@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>LEGO</title>
+        <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/lego.js"></script>
+        <link href="css/lego.css" rel="stylesheet">
+
+
+    </head>
+    <body>
+        <h1>LEGO</h1>
+
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Add</a></li>
+            <li role="presentation"><a href="#">View</a></li>
+            <li role="presentation"><a href="#">Placeholder</a></li>
+        </ul>
+
+        <section id="content">
+
+            <form class="form-horizontal">
+
+                <div class="form-group form-inline has-feedback">
+                    <h2>Add set</h2>
+
+                    <label for="set-num" class="control-label">Set Number:</label>
+
+                    <div>
+                        <input type="text" class="form-control" id="set-num">
+                        <span class="glyphicon form-control-feedback"></span>
+                    </div>
+
+
+                    <button type="button" id="add-set" class="btn btn-primary">Add set</button>
+
+                    <p>&nbsp;</p>
+
+                </div>
+
+
+
+                <div class="form-group form-inline has-feedback">
+                    <h2>Add parts</h2>
+
+                    <label for="part-num" class="control-label">Part Number:</label>
+
+                    <div>
+                        <input type="text" class="form-control" name="part-num" id="part-num">
+                        <span class="glyphicon form-control-feedback"></span>
+                    </div>
+
+                    <label for="color" class=ontrol-label">Color:</label>
+
+                    <div>
+                        <input type="text" class="form-control" name="color" id="color">
+                        <span class="glyphicon form-control-feedback"></span>
+                    </div>
+
+                    <label for="qty" class="control-label">Quantity:</label>
+
+                    <div>
+                        <input type="number" class="form-control" name="qty" id="qty" min="1">
+                        <span class="glyphicon form-control-feedback"></span>
+                    </div>
+
+
+                    <button type="button" id="add-part" class="btn btn-primary">Add part</button>
+
+                    <p>&nbsp;</p>
+
+                </div>
+
+
+
+                <!--
+                <div class="form-group">
+                    <div class="col-sm-1"></div>
+                    <button id="submit" type="button" class="btn btn-primary">List All Parts In Set</button>
+                    <button id="add" type="button" class="btn btn-primary">Add to DB</button>
+                    <input class="form-check-input" type="checkbox" id="useExtra">
+                    <label class="form-check-label" for="useExtra">Use extra pieces</label>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-1"></div>
+                    <button id="clearSetParts" type="button" class="btn btn-primary">Clear All Parts In Set</button>
+                    <label for="clearSetParts" class="col-sm-0 control-label">no action</label>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-1"></div>
+                    <button id="clearParts" type="button" class="btn btn-primary">Clear All Parts</button>
+                    <label for="clearParts" class="col-sm-0 control-label">no action</label>
+                </div>
+                -->
+
+
+            </form>   
+
+            <!--
+            <table id="partsTable" class="table table-bordered">
+                <tr>
+                    <th>Element ID</th>
+                    <th>Part Number</th>
+                    <th>Colour</th>
+                    <th>Quantity</th>
+                    <th>Name</th>
+                </tr>
+            </table> 
+            -->
+
+        </section>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../bootstrap/js/bootstrap.js"></script>
+    </body>
+</html>

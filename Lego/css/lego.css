@@ -1,0 +1,42 @@
+body {
+    padding: 1em;
+}
+
+#partsTable {
+    width: 85%;
+    margin: auto;
+}
+
+#content {
+    /*border: 2px solid red;*/
+    border-radius: 12px;
+    width: 85%;
+    margin: auto;
+    padding: 2em;
+}
+
+button {
+    margin-top: 1em;
+}
+
+form {
+    margin: auto;
+    /*border: 2px solid blue;*/
+    border-radius: 12px;
+}
+
+.form-group {
+    /*border: 2px solid green;*/
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    padding: 1em;
+    box-shadow: 1px 1px 1px gray;
+}
+
+.form-group p {
+    margin: .5em 0
+}
+
+.form-group h2 {
+    font-size: 24px;
+}
