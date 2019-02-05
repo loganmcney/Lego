@@ -9,7 +9,7 @@ What I'm working on right now...
 
 What works so far...
 -
-  - Get info on a specific from Rebrickable's API
+  - Get info on a specific set from Rebrickable's API
   - Add the set and its info to DB
   - Add the set pieces to DB
   - Graceful handling of invalid/duplicate set ID
