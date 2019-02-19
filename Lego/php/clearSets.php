@@ -2,7 +2,7 @@
 include "connect.php";
 
 
-$cmd = 'DELETE FROM set_parts';
+$cmd = 'DELETE FROM sets';
 $stmt = $dbo->prepare($cmd);
 try {
     if (!$stmt->execute()) {

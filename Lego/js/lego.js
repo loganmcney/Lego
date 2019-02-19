@@ -9,13 +9,16 @@ function init() {
     $("#add-set").click(addToDB);
     //$("#clearSetParts").click(clearSetParts);
     //$("#clearParts").click(clearParts);
-    $("#set-num").val("75194-1");
+    $("#set-num").val("75102-1");
 
 
     $('.nav-tabs a').click(function () {
         $(this).tab('show');
     });
 
+    $("#clear-parts").click(clearParts);
+    $("#clear-set-parts").click(clearSetParts);
+    $("#clear-sets").click(clearSets);
 
 }
 
@@ -31,8 +34,6 @@ function submit() {
     $.getJSON(url,
             function (data) {
 
-                var obj = data;
-                var qty = 0;
                 elements = data.results;
                 elements.forEach(element => {
                     qty += element.quantity;
@@ -45,15 +46,14 @@ function submit() {
     );
 
 }
-
-
+var elements = [];
+var nextExists;
 
 function addToDB() {
     var setNum = $("#set-num").val();
-    //set = {};
     var set;
     var setUrl = "https://rebrickable.com/api/v3/lego/sets/" + setNum + "/?key=" + API_KEY;
-    var setPartsUrl = "https://rebrickable.com/api/v3/lego/sets/" + setNum + "/parts/?key=" + API_KEY;
+    setPartsUrl = "https://rebrickable.com/api/v3/lego/sets/" + setNum + "/parts/?key=" + API_KEY;
 
     // get the set info and call addSet script to add to DB    
     $.ajax({
@@ -71,9 +71,7 @@ function addToDB() {
                 themeID: set.theme_id
             }, function (response) {
                 $("#set-num").parents().siblings("p").replaceWith(response.message);
-                console.log("succeeded: " + response.success);
                 if (response.success) {
-                    var elements = [];
                     addSetParts(elements);
                 }
             });
@@ -85,42 +83,39 @@ function addToDB() {
     });
 
 
-
-
     function addSetParts(elements) {
 
         // get the parts
         $.getJSON(setPartsUrl,
-                function (data) {
+            function (data) {
+                for (var i = 0; i < data.results.length; i++) {
+                    elements.push(data.results[i]);
+                }
 
-                    for (var i = 0; i < data.results.length; i++) {
-                        elements.push(data.results[i]);
-                    }
-
-                    // is there more than one page?
-                    if (data.next) {
-                        setPartsUrl = data.next;
-                        addSetParts(elements);
-                    }
+                // is there more than one page? get all the pages before adding parts
+                if (data.next) {
+                    setPartsUrl = "https" + data.next.substring(4);
+                    addSetParts(elements);
+                } else {
 
                     // do we count the extra parts?
 
-//                    if ($("#useExtra").prop("checked")) {
-//                        while (elements[elements.length - 1].is_spare) {
-//                            var spareConsidered = false;
-//                            for (var i = 0; i < elements.length - 1 || !spareConsidered; i++) {
-//                                if (elements[i].part.part_num === elements[elements.length - 1].part.part_num) {
-//                                    elements[i].quantity += elements[elements.length - 1].quantity;
-//                                    elements.pop();
-//                                    spareConsidered = true;
-//                                }
-//                            }
-//                        }
-//                    } else {
-//                        while (elements[elements.length - 1].is_spare) {
-//                            elements.pop();
-//                        }
-//                    }
+                    //                    if ($("#useExtra").prop("checked")) {
+                    //                        while (elements[elements.length - 1].is_spare) {
+                    //                            var spareConsidered = false;
+                    //                            for (var i = 0; i < elements.length - 1 || !spareConsidered; i++) {
+                    //                                if (elements[i].part.part_num === elements[elements.length - 1].part.part_num) {
+                    //                                    elements[i].quantity += elements[elements.length - 1].quantity;
+                    //                                    elements.pop();
+                    //                                    spareConsidered = true;
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    } else {
+                    //                        while (elements[elements.length - 1].is_spare) {
+                    //                            elements.pop();
+                    //                        }
+                    //                    }
 
                     // we'll count extra parts for now...
                     while (elements[elements.length - 1].is_spare) {
@@ -134,71 +129,66 @@ function addToDB() {
                         }
                     }
 
-                    console.log($(elements));
-
-                    // add the set parts and the general parts
+                    // add the parts to set_parts and parts tables
                     $(elements).each(function () {
                         // add the set parts
+                        //console.log("setNum: " + setNum + " partNum: " + this.part.part_num);
                         $.post("php/addSetParts.php", {
                             setNum: setNum,
-                            elementID: this.element_id,
+                            partNum: this.part.part_num,
+                            colorID: this.color.id,
                             qty: this.quantity
                         }, function (response) {
-                            //console.log(response);
+                            console.log(response);
                         });
                         // add the parts
-//                        $.post("php/addParts.php", {
-//                            partNum: this.part.part_num,
-//                            name: this.part.name,
-//                            colorID: this.color.id,
-//                            partUrl: this.part.part_url,
-//                            partImgUrl: this.part.part_img_url
-//                        }, function (response) {
-//                            //console.log(response);
-//                        });
+                        //    $.post("php/addParts.php", {
+                        //        partNum: this.part.part_num,
+                        //        name: this.part.name,
+                        //        colorID: this.color.id,
+                        //        partUrl: this.part.part_url,
+                        //        partImgUrl: this.part.part_img_url
+                        //    }, function (response) {
+                        //        //console.log(response);
+                        //    });
 
                     });
-
                 }
+
+            }
         );
 
         return elements;
 
     }
 
-    //console.log(elements);
-
-    //console.log(set);
-
-//    $.post("php/lego.php", {
-//        something: "nice!",
-//        year: postYear
-//    },
-//            function (data) {
-//                console.log(data);
-//            }
-//    );
-
 }
 
-
 function clearSetParts() {
-    $("label[for='clearSetParts']").text("working...");
+    $("label[for='clear-set-parts']").text("working...");
     $.post("php/clearSetParts.php",
             function (data) {
-                $("#clearSetParts").siblings("label").text("deleted " + data + " rows");
+                $("#clear-set-parts").siblings("label").text("deleted " + data + " rows");
             });
 }
 
 function clearParts() {
-    $("label[for='clearParts']").text("working...");
+    $("label[for='clear-parts']").text("working...");
     $.post("php/clearParts.php",
             function (data) {
-                $("#clearParts").siblings("label").text("deleted " + data + " rows");
+                $("#clear-parts").siblings("label").text("deleted " + data + " rows");
             });
 }
 
+function clearSets() {
+    $("label[for='clear-sets']").text("working...");
+    $.post("php/clearSets.php",
+            function (data) {
+                $("#clear-sets").siblings("label").text("deleted " + data + " rows");
+            });
+}
 
+// need to implement a table for this function to be useful
 function addRow(elements) {
     elements.forEach(element => {
         var row = "<tr><td>" + element.element_id + "</td><td>" + element.part.part_num
